@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/putih"
+    tools:context=".activity.BaruActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selamat Datang di"/>
+        <TextView
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toko Atma Jaya"/>
+        <ImageView
+            android:layout_marginTop="15dp"
+            android:layout_width="280dp"
+            android:layout_height="150dp"
+            android:src="@drawable/logo1"/>
+        <Button
+            android:id="@+id/btn_prosesLogin"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_btn_login1"
+            android:textColor="@color/biru"
+            android:textStyle="bold"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:text="Masuk"/>
+        <Button
+            android:id="@+id/btn_register"
+            android:background="@drawable/bg_btn_login2"
+            android:textColor="@color/putih"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+
+            android:text="Daftar"/>
+    </LinearLayout>
+
+</RelativeLayout>
