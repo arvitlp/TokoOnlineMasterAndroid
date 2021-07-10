@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                     //berhasil
-                    Toast.makeText( this@LoginActivity,"Register Berhasil"+respon.user.name,
+                    Toast.makeText( this@LoginActivity," Berhasil login " +respon.user.name,
                         Toast.LENGTH_SHORT).show()
                 }else{
                     //gagal

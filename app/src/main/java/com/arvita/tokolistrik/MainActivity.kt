@@ -1,7 +1,6 @@
 package com.arvita.tokolistrik
 
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.arvita.tokolistrik.activity.LoginActivity
 import com.arvita.tokolistrik.activity.MasukActivity
 import com.arvita.tokolistrik.fragment.AkunFragment
@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private var statusLogin = false
     private lateinit var s: SharedPref
 
+    private  var daridetail :Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +40,14 @@ class MainActivity : AppCompatActivity() {
         s = SharedPref(this)
 
         setUpBottomNav()
+        LocalBroadcastManager.getInstance(this).registerReceiver(message, IntentFilter("event:keranjang"))
+    }
+    val message :BroadcastReceiver = object :BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            daridetail = true
+        }
+
+
     }
     fun setUpBottomNav(){
         fm.beginTransaction().add(R.id.container, fragmentHome).show(fragmentHome).commit()
@@ -77,5 +87,13 @@ class MainActivity : AppCompatActivity() {
         fm.beginTransaction().hide(active).show(fragment).commit()
         active= fragment
 
+    }
+
+    override fun onResume() {
+        if (daridetail) {
+            daridetail = false
+            callFragment(1, fragmentKeranjang)
+        }
+        super.onResume()
     }
 }

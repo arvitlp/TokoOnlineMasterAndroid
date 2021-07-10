@@ -16,6 +16,7 @@ import com.arvita.tokolistrik.activity.DetailProdukActivity
 import com.arvita.tokolistrik.activity.LoginActivity
 import com.arvita.tokolistrik.helper.Helper
 import com.arvita.tokolistrik.model.Produk
+import com.arvita.tokolistrik.util.Config
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import java.text.NumberFormat
@@ -44,7 +45,7 @@ class AdapterProduk(var activity: Activity, var data:ArrayList<Produk>):Recycler
         holder.tvNama.text = data[position].nama
         holder.tvHarga.text = Helper().gantiRupiah( data[position].harga)
 //        holder.imgProduk.setImageResource(data[position].image)
-        val image ="http://192.168.43.227/tokoonline/public/storage/produk/" + data[position].image
+        val image = Config.productUrl  + data[position].image
         Picasso.get()
             .load(image)
             .placeholder(R.drawable.l1)

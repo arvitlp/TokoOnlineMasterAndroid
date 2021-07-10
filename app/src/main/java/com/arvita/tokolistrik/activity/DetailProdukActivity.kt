@@ -1,13 +1,17 @@
 package com.arvita.tokolistrik.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.arvita.tokolistrik.R
 import com.arvita.tokolistrik.helper.Helper
 import com.arvita.tokolistrik.model.Produk
 import com.arvita.tokolistrik.room.MyDatabase
+import com.arvita.tokolistrik.util.Config
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -33,6 +37,14 @@ class DetailProdukActivity : AppCompatActivity() {
     }
     private fun mainButton(){
         btn_keranjang.setOnClickListener{
+            val data = myDb.daoKeranjang().getProduk(produk.id)
+            if (data == null){
+                insert()
+            }else{
+                data.jumlah = data.jumlah +1
+                update(data)
+            }
+
             insert()
         }
         btn_favorit.setOnClickListener{
@@ -44,6 +56,12 @@ class DetailProdukActivity : AppCompatActivity() {
             }
         }
 
+        btn_tokeranjang.setOnClickListener {
+            val intent = Intent("event:keranjang")
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+            onBackPressed()
+        }
+
     }
 
     private fun insert(){
@@ -53,6 +71,18 @@ class DetailProdukActivity : AppCompatActivity() {
             .subscribe {
                 cekkeranjang()
                 Log.d("respons", "data inserted")
+                Toast.makeText(this,"Barang masuk keranjang",Toast.LENGTH_SHORT).show()
+            })
+    }
+
+    private fun update(data:Produk){
+        CompositeDisposable().add(Observable.fromCallable { myDb.daoKeranjang().update(data) }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                cekkeranjang()
+                Log.d("respons", "data inserted")
+                Toast.makeText(this,"Barang masuk keranjang",Toast.LENGTH_SHORT).show()
             })
     }
 
@@ -74,7 +104,7 @@ class DetailProdukActivity : AppCompatActivity() {
         tv_harga.text = Helper().gantiRupiah( produk                                                                                                                                    .harga)
         tv_deskripsi.text = produk.deskripsi
 
-        val img ="http://192.168.43.227/tokoonline/public/storage/produk/" + produk.image
+        val img = Config.productUrl  + produk.image
         Picasso.get()
             .load(img)
             .placeholder(R.drawable.l1)
@@ -83,11 +113,7 @@ class DetailProdukActivity : AppCompatActivity() {
             .into(image)
 
         //set Toolbar
-
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = produk.nama
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        Helper().setToolbar(this,toolbar,produk.nama)
 
     }
 
